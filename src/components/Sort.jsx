@@ -3,9 +3,12 @@ function Sort({ sortType, onChangeSort }) {
   const [activeSort, setActiveSort] = React.useState(false);
 
   const typeSort = [
-    { name: "популярности", sortProp: "rating" },
-    { name: "цене", sortProp: "price" },
-    { name: "алфавиту", sortProp: "title" },
+    { name: "популярности (DESC)", sortProp: "rating" },
+    { name: "популярности (ASC)", sortProp: "-rating" },
+    { name: "цене (DESC)", sortProp: "price" },
+    { name: "цене (ASC)", sortProp: "-price" },
+    { name: "алфавиту (DESC)", sortProp: "title" },
+    { name: "алфавиту (ASC)", sortProp: "-title" },
   ];
   const onClickSort = (i) => {
     onChangeSort(i);
