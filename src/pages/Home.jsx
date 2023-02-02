@@ -4,40 +4,49 @@ import Sort from "./../components/Sort";
 import PizzaBlock from "./../components/PizzaBlock/index";
 import Skeleton from "./../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination/Pagination";
-const Home = ({ search }) => {
-  const [activeCategoryId, setActiveCategoryId] = React.useState(0);
+import { SearchContext } from "../App";
+import { useDispatch, useSelector } from "react-redux";
+import { setActiveCategoryId } from "../redux/slices/filterSlice";
+import axios from "axios";
+
+const Home = () => {
+  const { activeCategory, sort } = useSelector((state) => state.filter);
+  const sortType = sort.sortProp;
+  const dispath = useDispatch();
+  const { search } = React.useContext(SearchContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [pizzas, setPizzas] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [sortType, setSortType] = React.useState({
-    name: "популярности (DESC)",
-    sortProp: "rating",
-  });
+  const onChangeCategory = (id) => {
+    dispath(setActiveCategoryId(id));
+    console.log(activeCategory);
+  };
+
   React.useEffect(() => {
-    const category = activeCategoryId > 0 ? `category=${activeCategoryId}` : "";
-    const sortBy = sortType.sortProp.replace("-", "");
-    const order = sortType.sortProp.includes("-") ? "asc" : "desc";
+    const category = activeCategory > 0 ? `category=${activeCategory}` : "";
+    const sortBy = sortType.replace("-", "");
+    const order = sortType.includes("-") ? "asc" : "desc";
     const searchValue = search ? "&search=" + search : "";
 
     setIsLoading(true);
-    fetch(
-      `https://63d3bb81a93a149755b16e08.mockapi.io/Pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${searchValue}`
-    )
-      .then((res) => res.json())
-      .then((json) => {
-        setPizzas(json);
+    axios
+      .get(
+        `https://63d3bb81a93a149755b16e08.mockapi.io/Pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${searchValue}`
+      )
+      .then((res) => {
+        setPizzas(res.data);
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [activeCategoryId, sortType, search, currentPage]);
+  }, [activeCategory, sortType, search, currentPage]);
   return (
     <div className="container">
       <div className="content__top">
         <Categories
-          activeCategoryId={activeCategoryId}
-          onClickCategory={(id) => setActiveCategoryId(id)}
+          activeCategoryId={activeCategory}
+          onClickCategory={onChangeCategory}
         />
-        <Sort sortType={sortType} onChangeSort={(id) => setSortType(id)} />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">

@@ -1,7 +1,10 @@
 import React from "react";
-function Sort({ sortType, onChangeSort }) {
+import { useDispatch, useSelector } from "react-redux";
+import { setSortType } from "../redux/slices/filterSlice";
+function Sort() {
+  const sort = useSelector((state) => state.filter.sort);
   const [activeSort, setActiveSort] = React.useState(false);
-
+  const dispatch = useDispatch();
   const typeSort = [
     { name: "популярности (DESC)", sortProp: "rating" },
     { name: "популярности (ASC)", sortProp: "-rating" },
@@ -11,9 +14,10 @@ function Sort({ sortType, onChangeSort }) {
     { name: "алфавиту (ASC)", sortProp: "-title" },
   ];
   const onClickSort = (i) => {
-    onChangeSort(i);
+    dispatch(setSortType(i));
     setActiveSort(false);
   };
+
   return (
     <div className="sort">
       <div className="sort__label">
@@ -30,7 +34,7 @@ function Sort({ sortType, onChangeSort }) {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setActiveSort(!activeSort)}>{sortType.name}</span>
+        <span onClick={() => setActiveSort(!activeSort)}>{sort.name}</span>
       </div>
       {activeSort && (
         <div className="sort__popup">
@@ -38,7 +42,7 @@ function Sort({ sortType, onChangeSort }) {
             {typeSort.map((t, i) => (
               <li
                 onClick={() => onClickSort(t)}
-                className={t.name === sortType.name ? "active" : ""}
+                className={t.name === sort.name ? "active" : ""}
                 key={i}
               >
                 {t.name}
