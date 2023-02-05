@@ -1,25 +1,39 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSortType } from "../redux/slices/filterSlice";
+export const typeSort = [
+  { name: "популярности (DESC)", sortProp: "rating" },
+  { name: "популярности (ASC)", sortProp: "-rating" },
+  { name: "цене (DESC)", sortProp: "price" },
+  { name: "цене (ASC)", sortProp: "-price" },
+  { name: "алфавиту (DESC)", sortProp: "title" },
+  { name: "алфавиту (ASC)", sortProp: "-title" },
+];
+
 function Sort() {
   const sort = useSelector((state) => state.filter.sort);
   const [activeSort, setActiveSort] = React.useState(false);
   const dispatch = useDispatch();
-  const typeSort = [
-    { name: "популярности (DESC)", sortProp: "rating" },
-    { name: "популярности (ASC)", sortProp: "-rating" },
-    { name: "цене (DESC)", sortProp: "price" },
-    { name: "цене (ASC)", sortProp: "-price" },
-    { name: "алфавиту (DESC)", sortProp: "title" },
-    { name: "алфавиту (ASC)", sortProp: "-title" },
-  ];
+  const sortRef = useRef();
   const onClickSort = (i) => {
     dispatch(setSortType(i));
     setActiveSort(false);
+    debugger;
   };
 
+  React.useEffect(() => {
+    const handleClick = (event) => {
+      console.log(event);
+      let path = event.path || (event.composedPath && event.composedPath());
+      if (!path.includes(sortRef.current)) {
+        setActiveSort(false);
+      }
+    };
+    document.body.addEventListener("click", handleClick);
+    return () => document.body.removeEventListener("click", handleClick);
+  }, []);
   return (
-    <div className="sort">
+    <div className="sort" ref={sortRef}>
       <div className="sort__label">
         <svg
           width="10"
