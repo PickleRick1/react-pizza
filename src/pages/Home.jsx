@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import qs from "qs";
 import Categories from "./../components/Categories";
 import Sort, { typeSort } from "./../components/Sort";
@@ -12,21 +12,20 @@ import {
   setCurrentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
-import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
+import { fetchPizzas } from "../redux/slices/pizzaSlice";
 
 const Home = () => {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
   const navigate = useNavigate();
-  const { activeCategory, sort, currentPage } = useSelector(
+  const { activeCategory, sort, currentPage, search } = useSelector(
     (state) => state.filter
   );
+  const { items, status } = useSelector((state) => state.pizza);
   const sortType = sort.sortProp;
   const dispatch = useDispatch();
-  const { search } = React.useContext(SearchContext);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [pizzas, setPizzas] = React.useState([]);
 
   const onChangeCategory = (id) => {
     dispatch(setActiveCategoryId(id));
@@ -39,16 +38,9 @@ const Home = () => {
     const sortBy = sortType.replace("-", "");
     const order = sortType.includes("-") ? "asc" : "desc";
     const searchValue = search ? "&search=" + search : "";
-
-    setIsLoading(true);
-    axios
-      .get(
-        `https://63d3bb81a93a149755b16e08.mockapi.io/Pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${searchValue}`
-      )
-      .then((res) => {
-        setPizzas(res.data);
-        setIsLoading(false);
-      });
+    dispatch(
+      fetchPizzas({ category, sortBy, order, searchValue, currentPage })
+    );
   };
   React.useEffect(() => {
     if (window.location.search) {
@@ -94,12 +86,29 @@ const Home = () => {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">
-        {isLoading
-          ? [...new Array(4)].map((_, index) => <Skeleton key={index} />)
-          : pizzas.map((p) => <PizzaBlock key={p.id} {...p} />)}
-      </div>
-      <Pagination currentPage={currentPage} onChangePage={onChangePage} />
+      {status === "error" ? (
+        <div className="content__error">
+          <h2>
+            Произошла ошибка <icon>😕</icon>
+          </h2>
+          <p>
+            Вероятней всего, произошла ошибка на сервере
+            <br />
+            Пожалуйста, попробуйте позже.
+          </p>
+        </div>
+      ) : (
+        <div className="content__items">
+          {status === "loading"
+            ? [...new Array(4)].map((_, index) => <Skeleton key={index} />)
+            : items.map((p) => <PizzaBlock key={p.id} {...p} />)}
+        </div>
+      )}
+      {status === "error" ? (
+        ""
+      ) : (
+        <Pagination currentPage={currentPage} onChangePage={onChangePage} />
+      )}
     </div>
   );
 };

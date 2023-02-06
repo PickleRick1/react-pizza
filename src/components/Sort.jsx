@@ -18,7 +18,6 @@ function Sort() {
   const onClickSort = (i) => {
     dispatch(setSortType(i));
     setActiveSort(false);
-    debugger;
   };
 
   React.useEffect(() => {
