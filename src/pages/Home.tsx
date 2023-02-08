@@ -5,32 +5,31 @@ import Sort, { typeSort } from "./../components/Sort";
 import PizzaBlock from "./../components/PizzaBlock/index";
 import Skeleton from "./../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination/Pagination";
-import { SearchContext } from "../App";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectFilter,
   setActiveCategoryId,
   setCurrentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
 
-import { useNavigate } from "react-router-dom";
-import { fetchPizzas } from "../redux/slices/pizzaSlice";
+import { Link, useNavigate } from "react-router-dom";
+import { fetchPizzas, selectPizza } from "../redux/slices/pizzaSlice";
 
 const Home = () => {
-  const isSearch = useRef(false);
-  const isMounted = useRef(false);
+  const isSearch = useRef<boolean>(false);
+  const isMounted = useRef<boolean>(false);
   const navigate = useNavigate();
-  const { activeCategory, sort, currentPage, search } = useSelector(
-    (state) => state.filter
-  );
-  const { items, status } = useSelector((state) => state.pizza);
+  const { activeCategory, sort, currentPage, search } =
+    useSelector(selectFilter);
+  const { items, status } = useSelector(selectPizza);
   const sortType = sort.sortProp;
   const dispatch = useDispatch();
 
-  const onChangeCategory = (id) => {
+  const onChangeCategory = (id: number) => {
     dispatch(setActiveCategoryId(id));
   };
-  const onChangePage = (num) => {
+  const onChangePage = (num: number) => {
     dispatch(setCurrentPage(num));
   };
   const getPizzas = () => {
@@ -39,6 +38,7 @@ const Home = () => {
     const order = sortType.includes("-") ? "asc" : "desc";
     const searchValue = search ? "&search=" + search : "";
     dispatch(
+      //@ts-ignore
       fetchPizzas({ category, sortBy, order, searchValue, currentPage })
     );
   };
@@ -89,7 +89,7 @@ const Home = () => {
       {status === "error" ? (
         <div className="content__error">
           <h2>
-            Произошла ошибка <icon>😕</icon>
+            Произошла ошибка <span>😕</span>
           </h2>
           <p>
             Вероятней всего, произошла ошибка на сервере
@@ -101,7 +101,11 @@ const Home = () => {
         <div className="content__items">
           {status === "loading"
             ? [...new Array(4)].map((_, index) => <Skeleton key={index} />)
-            : items.map((p) => <PizzaBlock key={p.id} {...p} />)}
+            : items.map((p: any) => (
+                <Link key={p.id} to={`/pizza/${p.id}`}>
+                  <PizzaBlock {...p} />
+                </Link>
+              ))}
         </div>
       )}
       {status === "error" ? (

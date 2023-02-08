@@ -50,6 +50,8 @@ const findItems = (state, action) => {
 };
 
 export const selectCart = (state) => state.cart;
+export const selectItem = (id) => (state) =>
+  state.cart.items.find((item) => item.id === id);
 export const { addItems, removeItems, clearItems, minusItems } =
   cartSlice.actions;
 

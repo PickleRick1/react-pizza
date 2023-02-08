@@ -1,7 +1,13 @@
+import { type } from "@testing-library/user-event/dist/type";
 import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSortType } from "../redux/slices/filterSlice";
-export const typeSort = [
+import { selectSort, setSortType } from "../redux/slices/filterSlice";
+
+type SortObj = {
+  name: string;
+  sortProp: string;
+};
+export const typeSort: SortObj[] = [
   { name: "популярности (DESC)", sortProp: "rating" },
   { name: "популярности (ASC)", sortProp: "-rating" },
   { name: "цене (DESC)", sortProp: "price" },
@@ -10,18 +16,18 @@ export const typeSort = [
   { name: "алфавиту (ASC)", sortProp: "-title" },
 ];
 
-function Sort() {
-  const sort = useSelector((state) => state.filter.sort);
+const Sort:React.FC = () => {
+  const sort = useSelector(selectSort);
   const [activeSort, setActiveSort] = React.useState(false);
   const dispatch = useDispatch();
-  const sortRef = useRef();
-  const onClickSort = (i) => {
-    dispatch(setSortType(i));
+  const sortRef = useRef<HTMLDivElement>(null);
+  const onClickSort = (t: SortObj) => {
+    dispatch(setSortType(t));
     setActiveSort(false);
   };
 
   React.useEffect(() => {
-    const handleClick = (event) => {
+    const handleClick = (event: any) => {
       console.log(event);
       let path = event.path || (event.composedPath && event.composedPath());
       if (!path.includes(sortRef.current)) {
