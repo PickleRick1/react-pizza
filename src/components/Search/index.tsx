@@ -3,14 +3,14 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { setSearchValue } from "../../redux/slices/filterSlice";
 import styles from "./Search.module.scss";
-const Search = () => {
+const Search: React.FC = () => {
   const [value, setValue] = React.useState<string>("");
   const inputRef = React.useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const onClickClear = () => {
     dispatch(setSearchValue(""));
     setValue("");
-      inputRef.current?.focus();
+    inputRef.current?.focus();
   };
   const updateSearchRequest = React.useCallback(
     debounce((str: string) => {
@@ -18,7 +18,7 @@ const Search = () => {
     }, 300),
     []
   );
-  const onChangeValueSearch = (e: any) => {
+  const onChangeValueSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     updateSearchRequest(e.target.value);
   };

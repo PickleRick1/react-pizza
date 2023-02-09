@@ -1,12 +1,9 @@
-import { type } from "@testing-library/user-event/dist/type";
 import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectSort, setSortType } from "../redux/slices/filterSlice";
+import { selectSort, setSortType, SortObj } from "../redux/slices/filterSlice";
 
-type SortObj = {
-  name: string;
-  sortProp: string;
-};
+
+
 export const typeSort: SortObj[] = [
   { name: "популярности (DESC)", sortProp: "rating" },
   { name: "популярности (ASC)", sortProp: "-rating" },
@@ -16,7 +13,7 @@ export const typeSort: SortObj[] = [
   { name: "алфавиту (ASC)", sortProp: "-title" },
 ];
 
-const Sort:React.FC = () => {
+const Sort: React.FC = () => {
   const sort = useSelector(selectSort);
   const [activeSort, setActiveSort] = React.useState(false);
   const dispatch = useDispatch();
@@ -27,10 +24,14 @@ const Sort:React.FC = () => {
   };
 
   React.useEffect(() => {
-    const handleClick = (event: any) => {
-      console.log(event);
-      let path = event.path || (event.composedPath && event.composedPath());
-      if (!path.includes(sortRef.current)) {
+    const handleClick = (event: MouseEvent) => {
+      const _event = event as MouseEvent & {
+        path: Node[];
+        composedPath: (tar?: HTMLElement) => EventTarget[];
+        target: HTMLElement;
+      };
+      let path = _event.path || (_event.composedPath && _event.composedPath());
+      if (sortRef.current && !path.includes(sortRef.current)) {
         setActiveSort(false);
       }
     };
@@ -72,5 +73,5 @@ const Sort:React.FC = () => {
       )}
     </div>
   );
-}
+};
 export default Sort;

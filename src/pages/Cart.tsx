@@ -8,7 +8,7 @@ import { clearItems, selectCart } from "../redux/slices/cartSlice";
 const Cart: React.FC = () => {
   const { totalPrice, items } = useSelector(selectCart);
   const totalCount = items.reduce(
-    (sum: number, item: any) => item.count + sum,
+    (sum: number, item) => item.count + sum,
     0
   );
   const dispatch = useDispatch();
@@ -97,7 +97,7 @@ const Cart: React.FC = () => {
             </div>
           </div>
           <div className="content__items">
-            {items.map((i: any) => (
+            {items.map((i) => (
               <CartItem key={i.id} {...i} />
             ))}
           </div>

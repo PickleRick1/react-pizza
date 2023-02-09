@@ -101,7 +101,7 @@ const Home = () => {
         <div className="content__items">
           {status === "loading"
             ? [...new Array(4)].map((_, index) => <Skeleton key={index} />)
-            : items.map((p: any) => (
+            : items.map((p) => (
                 <Link key={p.id} to={`/pizza/${p.id}`}>
                   <PizzaBlock {...p} />
                 </Link>
