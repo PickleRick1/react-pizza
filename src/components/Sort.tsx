@@ -1,19 +1,22 @@
 import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectSort, setSortType, SortObj } from "../redux/slices/filterSlice";
-
-
+import {
+  selectSort,
+  setSortType,
+  SortObj,
+  SortTypes,
+} from "../redux/slices/filterSlice";
 
 export const typeSort: SortObj[] = [
-  { name: "популярности (DESC)", sortProp: "rating" },
-  { name: "популярности (ASC)", sortProp: "-rating" },
-  { name: "цене (DESC)", sortProp: "price" },
-  { name: "цене (ASC)", sortProp: "-price" },
-  { name: "алфавиту (DESC)", sortProp: "title" },
-  { name: "алфавиту (ASC)", sortProp: "-title" },
+  { name: "популярности (DESC)", sortProp: SortTypes.RATING_DESC },
+  { name: "популярности (ASC)", sortProp: SortTypes.RATING_ASC },
+  { name: "цене (DESC)", sortProp: SortTypes.PRICE_DESC },
+  { name: "цене (ASC)", sortProp: SortTypes.PRICE_ASC },
+  { name: "алфавиту (DESC)", sortProp: SortTypes.TITLE_DESC },
+  { name: "алфавиту (ASC)", sortProp: SortTypes.TITLE_ASC },
 ];
 
-const Sort: React.FC = () => {
+const Sort: React.FC = React.memo(() => {
   const sort = useSelector(selectSort);
   const [activeSort, setActiveSort] = React.useState(false);
   const dispatch = useDispatch();
@@ -73,5 +76,5 @@ const Sort: React.FC = () => {
       )}
     </div>
   );
-};
+});
 export default Sort;

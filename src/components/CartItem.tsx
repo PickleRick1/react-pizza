@@ -1,18 +1,30 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addItems, CartItemType, minusItems, removeItems } from "../redux/slices/cartSlice";
+import {
+  addItems,
+  CartItemType,
+  minusItems,
+  removeItems,
+} from "../redux/slices/cartSlice";
 
-
-export const CartItem:React.FC<CartItemType> = ({ id, title, price, type, size, count, imageUrl }) => {
+export const CartItem: React.FC<CartItemType> = ({
+  id,
+  title,
+  price,
+  type,
+  size,
+  count,
+  imageUrl,
+}) => {
   const dispatch = useDispatch();
   const onClickPlus = () => {
-    dispatch(addItems({ id }));
+    dispatch(addItems({ id } as CartItemType));
   };
   const onClickMinus = () => {
     if (count <= 1) {
       dispatch(removeItems(id));
     } else {
-      dispatch(minusItems({ id }));
+      dispatch(minusItems({ id } as CartItemType));
     }
   };
   return (
@@ -25,7 +37,7 @@ export const CartItem:React.FC<CartItemType> = ({ id, title, price, type, size, 
         <p>
           {type} тесто, {size} см.
         </p>
-      </div>Name
+      </div>
       <div className="cart__item-count">
         <div
           onClick={onClickMinus}
@@ -74,7 +86,10 @@ export const CartItem:React.FC<CartItemType> = ({ id, title, price, type, size, 
       <div className="cart__item-price">
         <b>{price * count} ₽</b>
       </div>
-      <div onClick={() => dispatch(removeItems(id))} className="cart__item-remove">
+      <div
+        onClick={() => dispatch(removeItems(id))}
+        className="cart__item-remove"
+      >
         <div className="button button--outline button--circle">
           <svg
             width="10"

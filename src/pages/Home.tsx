@@ -5,7 +5,7 @@ import Sort, { typeSort } from "./../components/Sort";
 import PizzaBlock from "./../components/PizzaBlock/index";
 import Skeleton from "./../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination/Pagination";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   selectFilter,
   setActiveCategoryId,
@@ -15,6 +15,7 @@ import {
 
 import { Link, useNavigate } from "react-router-dom";
 import { fetchPizzas, selectPizza } from "../redux/slices/pizzaSlice";
+import { useAppDispatch } from "../redux/store";
 
 const Home = () => {
   const isSearch = useRef<boolean>(false);
@@ -24,11 +25,11 @@ const Home = () => {
     useSelector(selectFilter);
   const { items, status } = useSelector(selectPizza);
   const sortType = sort.sortProp;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const onChangeCategory = (id: number) => {
+  const onChangeCategory = React.useCallback((id: number) => {
     dispatch(setActiveCategoryId(id));
-  };
+  },[]);
   const onChangePage = (num: number) => {
     dispatch(setCurrentPage(num));
   };
@@ -38,18 +39,26 @@ const Home = () => {
     const order = sortType.includes("-") ? "asc" : "desc";
     const searchValue = search ? "&search=" + search : "";
     dispatch(
-      //@ts-ignore
-      fetchPizzas({ category, sortBy, order, searchValue, currentPage })
+      fetchPizzas({
+        category,
+        sortBy,
+        order,
+        searchValue,
+        currentPage: String(currentPage),
+      })
     );
   };
   React.useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
       const sort = typeSort.find((t) => t.sortProp === params.sortType);
+
       dispatch(
+        //@ts-ignore
         setFilters({
-          ...params,
-          sort,
+          activeCategory: Number(params.category),
+          currentPage: Number(params.currentPage),
+          sort: sort || typeSort[0],
         })
       );
       isSearch.current = true;
@@ -101,11 +110,7 @@ const Home = () => {
         <div className="content__items">
           {status === "loading"
             ? [...new Array(4)].map((_, index) => <Skeleton key={index} />)
-            : items.map((p) => (
-                <Link key={p.id} to={`/pizza/${p.id}`}>
-                  <PizzaBlock {...p} />
-                </Link>
-              ))}
+            : items.map((p) => <PizzaBlock key={p.id} {...p} />)}
         </div>
       )}
       {status === "error" ? (
