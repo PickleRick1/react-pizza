@@ -2,15 +2,22 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import logoSVG from "../assets/img/pizza-logo.svg";
-import { selectCart } from "../redux/slices/cartSlice";
+import { selectCart } from "../redux/slices/cart/selectors";
 import Search from "./Search";
 
 const Header: React.FC = () => {
-  const { totalPrice, items } = useSelector(selectCart);
-  const totalCount = items.reduce(
-    (sum: number, item) => sum + item.count,
-    0
-  );
+  const { totalPrice, items } = useSelector(selectCart); // достаем редьсер корзины
+  const totalCount = items.reduce((sum: number, item) => sum + item.count, 0);
+  const isMounted = React.useRef(false);
+  React.useEffect(() => {
+    if (isMounted.current) {
+      // проверка на первый рендер
+      const json = JSON.stringify(items); // парсим в джсон
+      localStorage.setItem("cart", json); // добавляем в сторедж
+    }
+    isMounted.current = true; // после 1 рендера делаем
+  }, [items]); // следит за изменением
+
   return (
     <div className="header">
       <div className="container">

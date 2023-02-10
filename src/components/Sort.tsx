@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { selectSort } from "../redux/slices/filter/selectors";
+import { setSortType } from "../redux/slices/filter/slice";
 import {
-  selectSort,
-  setSortType,
   SortObj,
   SortTypes,
-} from "../redux/slices/filterSlice";
+} from "../redux/slices/filter/types";
 
 export const typeSort: SortObj[] = [
   { name: "популярности (DESC)", sortProp: SortTypes.RATING_DESC },

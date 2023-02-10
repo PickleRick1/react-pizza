@@ -7,15 +7,16 @@ import Skeleton from "./../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination/Pagination";
 import { useSelector } from "react-redux";
 import {
-  selectFilter,
   setActiveCategoryId,
   setCurrentPage,
   setFilters,
-} from "../redux/slices/filterSlice";
+} from "../redux/slices/filter/slice";
 
-import { Link, useNavigate } from "react-router-dom";
-import { fetchPizzas, selectPizza } from "../redux/slices/pizzaSlice";
+import { useNavigate } from "react-router-dom";
+import { fetchPizzas} from "../redux/slices/pizza/slice";
 import { useAppDispatch } from "../redux/store";
+import { selectFilter } from "../redux/slices/filter/selectors";
+import { selectPizza } from "../redux/slices/pizza/selectors";
 
 const Home = () => {
   const isSearch = useRef<boolean>(false);

@@ -3,14 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CartEmpty from "../components/CartEmpty";
 import { CartItem } from "../components/CartItem";
-import { clearItems, selectCart } from "../redux/slices/cartSlice";
+import { selectCart } from "../redux/slices/cart/selectors";
+import { clearItems} from "../redux/slices/cart/slice";
 
 const Cart: React.FC = () => {
   const { totalPrice, items } = useSelector(selectCart);
-  const totalCount = items.reduce(
-    (sum: number, item) => item.count + sum,
-    0
-  );
+  const totalCount = items.reduce((sum: number, item) => item.count + sum, 0);
   const dispatch = useDispatch();
   const onClearItems = () => {
     dispatch(clearItems());
@@ -127,9 +125,9 @@ const Cart: React.FC = () => {
                   <path
                     d="M7 13L1 6.93015L6.86175 1"
                     stroke="#D3D3D3"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
 
