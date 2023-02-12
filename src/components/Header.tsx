@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logoSVG from "../assets/img/pizza-logo.svg";
 import { selectCart } from "../redux/slices/cart/selectors";
 import Search from "./Search";
@@ -9,6 +9,7 @@ const Header: React.FC = () => {
   const { totalPrice, items } = useSelector(selectCart); // достаем редьсер корзины
   const totalCount = items.reduce((sum: number, item) => sum + item.count, 0);
   const isMounted = React.useRef(false);
+  const location = useLocation();
   React.useEffect(() => {
     if (isMounted.current) {
       // проверка на первый рендер
@@ -30,7 +31,7 @@ const Header: React.FC = () => {
             </div>
           </div>
         </Link>
-        <Search />
+        {location.pathname !== "/cart" && <Search />}
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
             <span>{totalPrice} ₽</span>
