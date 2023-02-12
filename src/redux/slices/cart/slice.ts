@@ -1,5 +1,4 @@
 import { getCartFromLS } from "./../../../utils/getCartFromLS";
-import { RootState } from "./../../store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { countTotalPrice } from "../../../utils/countTotalPrice";
 import { findItems } from "../../../utils/findItems";
@@ -16,23 +15,23 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addItems(state, action: PayloadAction<CartItemType>) {
-      const items = findItems(state.items, action.payload.id);
+      const items = findItems(state.items, action.payload);
       if (items) {
         items.count += 1;
+        debugger;
       } else {
         state.items.push({
           ...action.payload,
           count: 1,
         });
       }
+
       state.totalPrice = countTotalPrice(state.items);
     },
     minusItems(state, action: PayloadAction<CartItemType>) {
-      const items = findItems(state.items, action.payload.id);
+      const items = findItems(state.items, action.payload);
 
-      if (items) {
-        items.count -= 1;
-      }
+      items && items.count--;
       state.totalPrice = countTotalPrice(state.items);
     },
     removeItems(state, action: PayloadAction<string>) {
@@ -45,7 +44,6 @@ export const cartSlice = createSlice({
     },
   },
 });
-
 
 export const { addItems, removeItems, clearItems, minusItems } =
   cartSlice.actions;

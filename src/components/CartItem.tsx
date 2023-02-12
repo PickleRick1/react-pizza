@@ -18,13 +18,23 @@ export const CartItem: React.FC<CartItemType> = ({
 }) => {
   const dispatch = useDispatch();
   const onClickPlus = () => {
-    dispatch(addItems({ id } as CartItemType));
+    dispatch(addItems({ id,title,
+      price,
+      type,
+      size,
+      count,
+      imageUrl, }));
   };
   const onClickMinus = () => {
     if (count <= 1) {
       dispatch(removeItems(id));
     } else {
-      dispatch(minusItems({ id } as CartItemType));
+      dispatch(minusItems({ id,title,
+        price,
+        type,
+        size,
+        count,
+        imageUrl, }));
     }
   };
   return (

@@ -13,7 +13,7 @@ import {
 } from "../redux/slices/filter/slice";
 
 import { useNavigate } from "react-router-dom";
-import { fetchPizzas} from "../redux/slices/pizza/slice";
+import { fetchPizzas } from "../redux/slices/pizza/slice";
 import { useAppDispatch } from "../redux/store";
 import { selectFilter } from "../redux/slices/filter/selectors";
 import { selectPizza } from "../redux/slices/pizza/selectors";
@@ -30,7 +30,7 @@ const Home = () => {
 
   const onChangeCategory = React.useCallback((id: number) => {
     dispatch(setActiveCategoryId(id));
-  },[]);
+  }, []);
   const onChangePage = (num: number) => {
     dispatch(setCurrentPage(num));
   };
@@ -55,8 +55,8 @@ const Home = () => {
       const sort = typeSort.find((t) => t.sortProp === params.sortType);
 
       dispatch(
-        //@ts-ignore
         setFilters({
+          search: params.search ? String(params.search) : "",
           activeCategory: Number(params.category),
           currentPage: Number(params.currentPage),
           sort: sort || typeSort[0],
