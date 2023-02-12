@@ -18,7 +18,7 @@ import { useAppDispatch } from "../redux/store";
 import { selectFilter } from "../redux/slices/filter/selectors";
 import { selectPizza } from "../redux/slices/pizza/selectors";
 
-const Home = () => {
+const Home: React.FC = () => {
   const isSearch = useRef<boolean>(false);
   const isMounted = useRef<boolean>(false);
   const navigate = useNavigate();
