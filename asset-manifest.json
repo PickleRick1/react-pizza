@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/react-pizza/static/css/main.87ad5960.css",
-    "main.js": "/react-pizza/static/js/main.c2018706.js",
-    "static/js/316.c7526823.chunk.js": "/react-pizza/static/js/316.c7526823.chunk.js",
+    "main.css": "/react-pizza/static/css/main.6d4fd68e.css",
+    "main.js": "/react-pizza/static/js/main.233b630f.js",
+    "static/js/316.bf1f5f71.chunk.js": "/react-pizza/static/js/316.bf1f5f71.chunk.js",
     "static/js/335.08f4cfd4.chunk.js": "/react-pizza/static/js/335.08f4cfd4.chunk.js",
-    "static/js/949.bb521800.chunk.js": "/react-pizza/static/js/949.bb521800.chunk.js",
+    "static/js/949.b83ba7bd.chunk.js": "/react-pizza/static/js/949.b83ba7bd.chunk.js",
     "static/js/787.3a33840f.chunk.js": "/react-pizza/static/js/787.3a33840f.chunk.js",
     "static/media/empty-cart.png": "/react-pizza/static/media/empty-cart.db905d1f4b063162f25b.png",
     "static/media/pizza-logo.svg": "/react-pizza/static/media/pizza-logo.56ac87032d8f6fdf863326acd06c0d97.svg",
     "index.html": "/react-pizza/index.html",
-    "main.87ad5960.css.map": "/react-pizza/static/css/main.87ad5960.css.map",
-    "main.c2018706.js.map": "/react-pizza/static/js/main.c2018706.js.map",
-    "316.c7526823.chunk.js.map": "/react-pizza/static/js/316.c7526823.chunk.js.map",
+    "main.6d4fd68e.css.map": "/react-pizza/static/css/main.6d4fd68e.css.map",
+    "main.233b630f.js.map": "/react-pizza/static/js/main.233b630f.js.map",
+    "316.bf1f5f71.chunk.js.map": "/react-pizza/static/js/316.bf1f5f71.chunk.js.map",
     "335.08f4cfd4.chunk.js.map": "/react-pizza/static/js/335.08f4cfd4.chunk.js.map",
-    "949.bb521800.chunk.js.map": "/react-pizza/static/js/949.bb521800.chunk.js.map",
+    "949.b83ba7bd.chunk.js.map": "/react-pizza/static/js/949.b83ba7bd.chunk.js.map",
     "787.3a33840f.chunk.js.map": "/react-pizza/static/js/787.3a33840f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.87ad5960.css",
-    "static/js/main.c2018706.js"
+    "static/css/main.6d4fd68e.css",
+    "static/js/main.233b630f.js"
   ]
 }
